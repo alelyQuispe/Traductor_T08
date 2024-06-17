@@ -1,0 +1,18 @@
+<nav class="sidebar">
+    <div class="sidebar-header">
+      <h1>TRADUCTOR <i class="fa fa-rocket"></i></h1>
+    </div>
+    <ul class="menu">
+      <li><a routerLink="/inicio"><i class="fa fa-home"></i> Inicio</a></li>
+      <li>
+        <a (click)="toggleAdmin()">
+          <i class="fa fa-cogs"></i>Servicio cognitivo <i class="fa" [ngClass]="{'fa-chevron-down': showAdminContent, 'fa-chevron-right': !showAdminContent}"></i>
+        </a>
+        <ul id="adminSubMenu" class="sub-menu" [ngStyle]="{'display': showAdminContent ? 'block' : 'none'}">
+          <li><a routerLink="/admin/traductor"><i class="fa fa-users"></i> Traductor</a></li>
+        </ul>
+      </li>
+      <li><a routerLink="/salir"><i class="fa fa-sign-out"></i> Salir</a></li>
+    </ul>
+  </nav>
+  

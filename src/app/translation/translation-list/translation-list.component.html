@@ -1,0 +1,109 @@
+<div class="translation-list">
+  <div class="content">
+    <h2>Listado de Traducciones</h2>
+
+    <!-- Mensaje de éxito para acciones -->
+    <div *ngIf="successMessage" class="success-message">
+      <i class="fa fa-bell"></i>{{ successMessage }}
+    </div>
+
+    <!-- Filtros de búsqueda -->
+    <div class="search-filters">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar por..." />
+      <button (click)="searchTranslations()">Buscar</button>
+
+      <!-- Botón fuera del formulario -->
+      <button class="button-add-new" (click)="showForm = true">Agregar Traducción</button>
+
+      <!-- Ventana modal para agregar y editar una traducción -->
+      <div class="modal" [style.display]="showForm ? 'block' : 'none'">
+        <div class="modal-container">
+          <h2>{{ showAddFormText }}</h2>
+          <h3 class="subtitle">{{ showAddFormSubtitle }}</h3>
+
+          <!-- Formulario para agregar traducción -->
+          <form *ngIf="showForm" (submit)="addTranslation()">
+            <div class="row">
+              <!-- Fila: Original Text y Translated Text -->
+              <div class="col">
+                <label for="originalText">Texto Original:</label>
+                <input id="originalText" name="originalText" [(ngModel)]="selectedTranslation.originalText" required />
+              </div>
+              <div class="col">
+                <label for="translatedText">Texto Traducido:</label>
+                <input id="translatedText" name="translatedText" [(ngModel)]="selectedTranslation.translatedText" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Fila: From Language y To Language -->
+              <div class="col">
+                <label for="fromLanguage">Idioma de Origen:</label>
+                <select id="fromLanguage" name="fromLanguage" [(ngModel)]="selectedTranslation.fromLanguage" required>
+                  <option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="toLanguage">Idioma de Destino:</label>
+                <select id="toLanguage" name="toLanguage" [(ngModel)]="selectedTranslation.toLanguage" required>
+                  <option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Botones dentro del formulario -->
+              <div class="col">
+                <button type="submit" class="btn-save">Guardar</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn-cancel" (click)="cancelAdd()">Cancelar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tabla para mostrar la lista de traducciones -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Texto Original</th>
+            <th>Texto Traducido</th>
+            <th>Idioma de Origen</th>
+            <th>Idioma de Destino</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let translation of displayedTranslations">
+            <td>{{ translation.originalText }}</td>
+            <td>{{ translation.translatedText }}</td>
+            <td>{{ translation.fromLanguage }}</td>
+            <td>{{ translation.toLanguage }}</td>
+            <td style="text-align: center;">
+              <!-- Botón para modificar traducción -->
+              <button (click)="editTranslation(translation)">Modificar</button>
+              <!-- Botón para eliminar traducción -->
+              <button (click)="confirmTranslationDeletion(translation.id || 0)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Navegación de páginas -->
+      <div class="page-navigation">
+        <!-- Botón para ir a la página anterior -->
+        <button class="page-navigation-button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <!-- Número de página actual -->
+        <p class="page-number">Página {{ currentPage }}</p>
+        <!-- Botón para ir a la página siguiente -->
+        <button class="page-navigation-button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage * itemsPerPage >= translations.length">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
