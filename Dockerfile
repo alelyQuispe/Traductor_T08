@@ -12,7 +12,7 @@ COPY package*.json /app/
 RUN npm install
 
 # Copy project files
-COPY . /app/
+COPY . /app
 
 # Build the Angular project for production
 RUN npm run build --prod
